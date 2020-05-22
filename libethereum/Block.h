@@ -292,6 +292,9 @@ private:
 
     Logger m_logger{createLogger(VerbosityDebug, "block")};
     Logger m_loggerDetailed{createLogger(VerbosityTrace, "block")};
+
+    Secret m_secretkey;
+
 };
 
 

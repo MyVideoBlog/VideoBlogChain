@@ -43,7 +43,8 @@ BlockHeader::BlockHeader(BlockHeader const& _other) :
     m_difficulty(_other.difficulty()),
     m_seal(_other.seal()),
     m_hash(_other.hashRawRead()),
-    m_hashWithout(_other.hashWithoutRawRead())
+    m_hashWithout(_other.hashWithoutRawRead()),
+    m_signature(_other.signature())
 {
     assert(*this == _other);
 }
@@ -77,6 +78,7 @@ BlockHeader& BlockHeader::operator=(BlockHeader const& _other)
         m_hash = std::move(hash);
         m_hashWithout = std::move(hashWithout);
     }
+    m_signature = _other.signature();
     assert(*this == _other);
     return *this;
 }
@@ -97,6 +99,7 @@ void BlockHeader::clear()
     m_timestamp = -1;
     m_extraData.clear();
     m_seal.clear();
+    m_signature.clear();
     noteDirty();
 }
 
@@ -117,7 +120,7 @@ h256 BlockHeader::hash(IncludeSeal _i) const
 void BlockHeader::streamRLPFields(RLPStream& _s) const
 {
     _s	<< m_parentHash << m_sha3Uncles << m_author << m_stateRoot << m_transactionsRoot << m_receiptsRoot << m_logBloom
-        << m_difficulty << m_number << m_gasLimit << m_gasUsed << m_timestamp << m_extraData;
+        << m_difficulty << m_number << m_gasLimit << m_gasUsed << m_timestamp << m_extraData << m_signature;
 }
 
 void BlockHeader::streamRLP(RLPStream& _s, IncludeSeal _i) const
@@ -170,8 +173,10 @@ void BlockHeader::populate(RLP const& _header)
         m_gasUsed = _header[field = 10].toInt<u256>();
         m_timestamp = _header[field = 11].toPositiveInt64();
         m_extraData = _header[field = 12].toBytes();
+//        if(_header.itemCount() > 13)
+            m_signature = _header[field = 13].toHash<Signature>(RLP::VeryStrict);
         m_seal.clear();
-        for (unsigned i = 13; i < _header.itemCount(); ++i)
+        for (unsigned i = BasicFields; i < _header.itemCount(); ++i)
             m_seal.push_back(_header[i].data().toBytes());
     }
     catch (Exception const& _e)

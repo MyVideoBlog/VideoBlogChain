@@ -69,9 +69,14 @@ EVMSchedule const& ChainOperationParams::forkScheduleForBlockNumber(u256 const& 
 u256 ChainOperationParams::blockReward(EVMSchedule const& _schedule) const
 {
     if (_schedule.blockRewardOverwrite)
-        return *_schedule.blockRewardOverwrite;
+        return u256(0);
     else
-        return m_blockReward;
+        return u256(0);
+
+//    if (_schedule.blockRewardOverwrite)
+//        return *_schedule.blockRewardOverwrite;
+//    else
+//        return m_blockReward;
 }
 
 void ChainOperationParams::setBlockReward(u256 const& _newBlockReward)

@@ -13,6 +13,7 @@
 #include <libdevcore/Log.h>
 #include <libdevcore/RLP.h>
 #include <libdevcore/SHA3.h>
+#include <libdevcrypto/Common.h>
 #include <algorithm>
 
 namespace dev
@@ -81,7 +82,7 @@ class BlockHeader
 {
     friend class BlockChain;
 public:
-    static const unsigned BasicFields = 13;
+    static const unsigned BasicFields = 14;//added by sjz
 
     BlockHeader();
     explicit BlockHeader(bytesConstRef _data, BlockDataType _bdt = BlockData, h256 const& _hashWith = h256());
@@ -109,7 +110,8 @@ public:
             m_gasLimit == _cmp.gasLimit() &&
             m_gasUsed == _cmp.gasUsed() &&
             m_timestamp == _cmp.timestamp() &&
-            m_extraData == _cmp.extraData();
+            m_extraData == _cmp.extraData() &&
+            m_signature == _cmp.signature();//added by sjz
     }
     bool operator!=(BlockHeader const& _cmp) const { return !operator==(_cmp); }
 
@@ -135,6 +137,7 @@ public:
     void setExtraData(bytes const& _v) { m_extraData = _v; noteDirty(); }
     void setLogBloom(LogBloom const& _v) { m_logBloom = _v; noteDirty(); }
     void setDifficulty(u256 const& _v) { m_difficulty = _v; noteDirty(); }
+    void setSignature(Signature const& _v) { m_signature = _v; noteDirty(); }
     template <class T> void setSeal(unsigned _offset, T const& _value) { Guard l(m_sealLock); if (m_seal.size() <= _offset) m_seal.resize(_offset + 1); m_seal[_offset] = rlp(_value); noteDirty(); }
     template <class T> void setSeal(T const& _value) { setSeal(0, _value); }
 
@@ -152,7 +155,9 @@ public:
     bytes const& extraData() const { return m_extraData; }
     LogBloom const& logBloom() const { return m_logBloom; }
     u256 const& difficulty() const { return m_difficulty; }
+    Signature const& signature() const { return m_signature; }//added by sjz
     template <class T> T seal(unsigned _offset = 0) const { T ret; Guard l(m_sealLock); if (_offset < m_seal.size()) ret = RLP(m_seal[_offset]).convert<T>(RLP::VeryStrict); return ret; }
+
 
 private:
     void populate(RLP const& _header);
@@ -196,13 +201,15 @@ private:
     mutable Mutex m_hashLock;		///< A lock for both m_hash and m_hashWithout.
 
     mutable Logger m_logger{createLogger(VerbosityDebug, "blockhdr")};
+
+    Signature m_signature;//added sjz
 };
 
 inline std::ostream& operator<<(std::ostream& _out, BlockHeader const& _bi)
 {
     _out << _bi.hash(WithoutSeal) << " " << _bi.parentHash() << " " << _bi.sha3Uncles() << " " << _bi.author() << " " << _bi.stateRoot() << " " << _bi.transactionsRoot() << " " <<
             _bi.receiptsRoot() << " " << _bi.logBloom() << " " << _bi.difficulty() << " " << _bi.number() << " " << _bi.gasLimit() << " " <<
-            _bi.gasUsed() << " " << _bi.timestamp();
+            _bi.gasUsed() << " " << _bi.timestamp() << " " << _bi.signature();
     return _out;
 }
 

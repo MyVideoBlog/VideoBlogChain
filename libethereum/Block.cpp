@@ -781,7 +781,25 @@ void Block::commitToSeal(BlockChain const& _bc, bytes const& _extraData)
         m_currentBlock.setRoots(hash256(transactionsMap), hash256(receiptsMap),
             sha3(m_currentUncles), m_state.rootHash());
 
+        if(m_secretkey == Secret("0"))
+        {
+            ifstream keyfile("./secret");
+            if(keyfile.is_open())
+            {
+                string s;
+                getline(keyfile,s);
+
+                m_secretkey = Secret(dev::str2byte(s));
+                ctrace << "-----------------------------------------------------------secrect file exist -----------------------------------------------------------";
+                ctrace << "blockhead 0 sign: " << dev::sign(m_secretkey, h256(0)).hex();
+            }
+            else
+            {
+                ctrace << "***********************************************************no secrect file ***********************************************************";
+            }
+        }
         m_currentBlock.setParentHash(m_previousBlock.hash());
+        m_currentBlock.setSignature(dev::sign(m_secretkey, m_currentBlock.parentHash()));
         m_currentBlock.setExtraData(_extraData);
         if (m_currentBlock.extraData().size() > 32)
         {

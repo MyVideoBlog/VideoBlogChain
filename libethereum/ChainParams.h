@@ -46,6 +46,7 @@ struct ChainParams: public ChainOperationParams
     u256 gasUsed = 0;
     u256 timestamp = 0;
     bytes extraData;
+    Signature signature;//added by sjz
     mutable h256 stateRoot;	///< Only pre-populate if known equivalent to genesisState's root. If they're different Bad Things Will Happen.
     AccountMap genesisState;
 

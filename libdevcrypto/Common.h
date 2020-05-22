@@ -209,4 +209,8 @@ bytes kdf(Secret const& _z, bytes const& _s1, unsigned kdByteLen);
 
 }
 }
+
+bytes str2byte(const std::string &str );
+
+std::string byte2Str(unsigned char byte_arr[], int arr_len);
 }

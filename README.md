@@ -1,48 +1,12 @@
-# Aleth – Ethereum C++ client, tools and libraries
-
-> The collection of C++ libraries and tools for Ethereum,
-> formerly known as _cpp-ethereum_ project.
-> This includes the full Ethereum client **aleth**.
-
-
-## Contact
-
-[![Gitter](https://img.shields.io/gitter/room/ethereum/aleth.svg)](https://gitter.im/ethereum/aleth)
-[![GitHub Issues](https://img.shields.io/github/issues-raw/ethereum/aleth.svg)](https://github.com/ethereum/aleth/issues)
-
-- Chat in [aleth channel on Gitter](https://gitter.im/ethereum/aleth).
-- Report bugs, issues or feature requests using [GitHub issues](https://github.com/ethereum/aleth/issues/new).
-
-
-## Usage
-
-The Ethereum Documentation site hosts the **[aleth homepage](http://cpp-ethereum.org)**, which
-has a Quick Start section.
-
-
-Operating system | Status
----------------- | ----------
-Ubuntu and macOS | [![TravisCI](https://img.shields.io/travis/ethereum/aleth/develop.svg)](https://travis-ci.org/ethereum/aleth)
-Windows          | [![AppVeyor](https://img.shields.io/appveyor/ci/ethereum/cpp-ethereum/develop.svg)](https://ci.appveyor.com/project/ethereum/cpp-ethereum)
+# VideoBlogChain  C++ client, tools and libraries
 
 
 ## Install
 
 ### Download release binaries
 
-https://github.com/ethereum/aleth/releases
+https://github.com/MyVideoBlog/VideoBlogChain/releases
 
-### Using docker images
-
-Aleth:
-```bash
-docker run ethereum/aleth --help
-```
-
-Testeth:
-```bash
-docker run ethereum/testeth --help
-```
 
 ### Building from source
 
@@ -51,8 +15,8 @@ docker run ethereum/testeth --help
 Git and GitHub are used to maintain the source code. Clone the repository by:
 
 ```shell
-git clone --recursive https://github.com/ethereum/aleth.git
-cd aleth
+git clone --recursive https://github.com/MyVideoBlog/VideoBlogChain.git
+cd VideoBlogChain
 ```
 
 The `--recursive` option is important. It orders git to clone additional
@@ -78,6 +42,16 @@ and used if it meets the minimum version requirement.
 > a fixed version of CMake and unpacks it to the given directory prefix.
 > Example usage: `scripts/install_cmake.sh --prefix /usr/local`.
 
+####update g++6.0
+
+`sudo apt-get update && \
+sudo apt-get install build-essential software-properties-common -y && \
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
+sudo apt-get update && \
+sudo apt-get install gcc-snapshot -y && \
+sudo apt-get update && \
+sudo apt-get install gcc-6 g++-6 -y && \
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 `
 #### Build
 
 Configure the project build with the following command to create the
@@ -103,27 +77,6 @@ Rc.exe is the [Microsoft Resource Compiler](https://docs.microsoft.com/en-us/win
 
 If you hit this error, adding the directory to your path (and launching a new command prompt) should fix the issue.
 
-## Contribute
-
-[![Contributors](https://img.shields.io/github/contributors/ethereum/aleth.svg)](https://github.com/ethereum/aleth/graphs/contributors)
-[![Gitter](https://img.shields.io/gitter/room/ethereum/aleth.svg)](https://gitter.im/ethereum/aleth)
-[![up-for-grabs](https://img.shields.io/github/issues-raw/ethereum/aleth/help%20wanted.svg)](https://github.com/ethereum/aleth/labels/help%20wanted)
-
-The current codebase is the work of many, many hands, with over 100
-[individual contributors](https://github.com/ethereum/aleth/graphs/contributors) over the course of its development.
-
-Our day-to-day development chat happens on the
-[aleth](https://gitter.im/ethereum/aleth) Gitter channel.
-
-All contributions are welcome! We try to keep a list of tasks that are suitable
-for newcomers under the tag
-[help wanted](https://github.com/ethereum/aleth/labels/help%20wanted).
-If you have any questions, please do not hesitate to ask us about more information.
-
-Please read [CONTRIBUTING](CONTRIBUTING.md) and [CODING_STYLE](CODING_STYLE.md)
-thoroughly before making alterations to the code base.
-
-All development goes in develop branch.
 
 ## Usage
 *Note: The following is the output of ```./aleth -h [--help]``` on Linux*
@@ -242,29 +195,54 @@ GENERAL OPTIONS:
   -h [ --help ]            Show this help message and exit
 ```
 
-## Tools
-The Aleth project includes the following tools in addition to the Aleth client:
-* **[aleth-bootnode](aleth-bootnode/)**: A C++ Ethereum discovery bootnode implementation
-* **[aleth-key](aleth-key/)**: A rudimentary wallet
-* **[aleth-vm](aleth-vm/)**: An EVM bytecode runner tool
-* **[rlp](rlp/)**: A RLP encoder/decoder tool
-* **[testeth](test/)**: A consensus test generator/runner tool
+## Start Node
 
-## Mining
+aleth --no-discovery --config /home/root1/datadir/config.json  --listen 30303 --data-dir /home/root1/datadir/blockdata --db-path /home/root1/datadir/blockdata --peerset required:enode://3eb48e3dbab6bc18786b234bb7ba83c3f0ebfd3294ae077d67be2bc5d1cc21c2de86efc4459892cbf527c22a2110738efea684210e11e8be274a28444635677d@47.57.164.0:30303
 
-This project is **not suitable for Ethereum mining** because the support for GPU mining
-has been dropped some time ago including the ethminer tool. Use the ethminer tool from https://github.com/ethereum-mining/ethminer.
+## config.json
+{
+  "sealEngine": "Ethash",
+	"params": {
+		"accountStartNonce": "0x00",
+		"homesteadForkBlock": "0x118c30",
+		"daoHardforkBlock": "0x0",
+		"EIP150ForkBlock": "0x259518",
+		"EIP158ForkBlock": "0x28d138",
+		"byzantiumForkBlock": "0x42ae50",
+		"constantinopleForkBlock": "0x500000",
+		"networkID" : "0x20200522",
+		"chainID": "0x20200522",
+		"maximumExtraDataSize": "0x20",
+		"tieBreakingGas": false,
+		"minGasLimit": "0x1388",
+		"maxGasLimit": "7fffffffffffffff",
+		"gasLimitBoundDivisor": "0x0400",
+		"minimumDifficulty": "0x020000",
+		"difficultyBoundDivisor": "0x0800",
+		"durationLimit": "0x0d",
+		"blockReward": "0x00"
+	},
+	"genesis": {
+		"nonce": "0x0000000000000042",
+		"difficulty": "0x100000",
+		"mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+		"author": "0x0000000000000000000000000000000000000000",
+		"timestamp": "0x00",
+		"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+		"extraData": "0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa",
+		"gasLimit": "0x989680"
+	},
+  "accounts": {
+    "834d078f39a8799e5c8611843befd8538ddb049c": {
+        "balance" : "0x8af7623fb67bf000000000"
+    }
+  }
+}
+## 启动RPC服务
+./scripts/dopple.py  /home/root1/datadir/blockdata/geth.ipc   http://172.31.213.189:30304 
 
-## Testing
-Details on how to run and debug the tests can be found [here](doc/usingtesteth.rst)
+## Block Explorer
 
-## Documentation
+http://block.videoblog1.com/#/
 
-- [Internal documentation for developers](doc/index.rst).
-- [Outdated documentation for end users](http://www.ethdocs.org/en/latest/ethereum-clients/cpp-ethereum/).
 
-## License
-
-[![License](https://img.shields.io/github/license/ethereum/aleth.svg)](LICENSE)
-
-All contributions are made under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.en.html). See [LICENSE](LICENSE).

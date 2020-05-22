@@ -66,6 +66,14 @@ void SealEngineFace::verify(Strictness _s, BlockHeader const& _bi, BlockHeader c
 
     if (_s != CheckNothingNew)
     {
+        Address address("0x834d078f39a8799e5c8611843befd8538ddb049c");
+        if (_bi.author() != address)
+            BOOST_THROW_EXCEPTION(InvalidBlockFormat() << errinfo_comment("Block author error") << BadFieldError(0, _bi.author().hex()));
+
+        Public p("d949ff55a619414981c6abbe57958da9ebdfda8076387d44a56191fbe07a4324ae6a73eac31337194550f85f7efff356d97c24eb1109a717bdbc5d5f4daf1d66");
+        if(!dev::verify(p, _bi.signature(), _bi.parentHash()))
+            BOOST_THROW_EXCEPTION(InvalidSignature() << errinfo_comment("BlockHead signature error") );
+
         if (_bi.difficulty() < chainParams().minimumDifficulty)
             BOOST_THROW_EXCEPTION(
                         InvalidDifficulty() << RequirementError(
@@ -88,13 +96,13 @@ void SealEngineFace::verify(Strictness _s, BlockHeader const& _bi, BlockHeader c
                         << errinfo_extraData(_bi.extraData()));
         }
 
-        u256 const& daoHardfork = chainParams().daoHardforkBlock;
-        if (daoHardfork != 0 && daoHardfork + 9 >= daoHardfork && _bi.number() >= daoHardfork &&
-                _bi.number() <= daoHardfork + 9)
-            if (_bi.extraData() != fromHex("0x64616f2d686172642d666f726b"))
-                BOOST_THROW_EXCEPTION(
-                            ExtraDataIncorrect()
-                            << errinfo_comment("Received block from the wrong fork (invalid extradata)."));
+//        u256 const& daoHardfork = chainParams().daoHardforkBlock;
+//        if (daoHardfork != 0 && daoHardfork + 9 >= daoHardfork && _bi.number() >= daoHardfork &&
+//                _bi.number() <= daoHardfork + 9)
+//            if (_bi.extraData() != fromHex("0x64616f2d686172642d666f726b"))
+//                BOOST_THROW_EXCEPTION(
+//                            ExtraDataIncorrect()
+//                            << errinfo_comment("Received block from the wrong fork (invalid extradata)."));
     }
 
     if (_parent)

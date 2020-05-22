@@ -243,7 +243,19 @@ string Eth::eth_sendTransaction(Json::Value const& _json)
 		pair<bool, Secret> ar = m_ethAccounts.authenticate(t);
 		if (!ar.first)
 		{
-			h256 txHash = client()->submitTransaction(t, ar.second);
+            if(0)
+            {
+                Public p =  dev::toPublic(ar.second);
+                bytes secretkey;
+                for(int i=0; i<32; i++)
+                {
+                    secretkey.push_back(ar.second.data()[i]);
+                }
+                ctrace << "secret key = " << dev::byte2Str(secretkey.data(), 32);
+                ctrace << "public key " << p.hex() << ", address = " << dev::toAddress(p).hex();
+            }
+
+            h256 txHash = client()->submitTransaction(t, ar.second);
 			return toJS(txHash);
 		}
 		else

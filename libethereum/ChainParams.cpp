@@ -185,7 +185,7 @@ void ChainParams::loadGenesis(string const& _json, h256 const& _stateRoot)
                   0;
     timestamp = u256(fromBigEndian<u256>(fromHex(genesis[c_timestamp].get_str())));
     extraData = bytes(fromHex(genesis[c_extraData].get_str()));
-
+    signature = Signature("d8776c53bea76d14983a61b8c170fb6fdf020996a32d32f56082db210d6abe904c1c6e1fe98b215566f364aa5defcb996ac31d5386f4142c5b774d8de4e9016800");//added by sjz
     // magic code for handling ethash stuff:
     if (genesis.count(c_mixHash) && genesis.count(c_nonce))
     {
@@ -222,6 +222,7 @@ void ChainParams::populateFromGenesis(bytes const& _genesisRLP, AccountMap const
     gasUsed = bi.gasUsed();
     timestamp = bi.timestamp();
     extraData = bi.extraData();
+    signature = bi.signature();//added by sjz
     genesisState = _state;
     RLP r(_genesisRLP);
     sealFields = r[0].itemCount() - BlockHeader::BasicFields;
@@ -276,7 +277,8 @@ bytes ChainParams::genesisBlock() const
             << gasLimit
             << gasUsed			// gasUsed
             << timestamp
-            << extraData;
+            << extraData
+            << signature;//added by sjz
     block.appendRaw(sealRLP, sealFields);
     block.appendRaw(RLPEmptyList);
     block.appendRaw(RLPEmptyList);

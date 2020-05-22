@@ -427,3 +427,101 @@ bytes ecies::kdf(Secret const& _z, bytes const& _s1, unsigned kdByteLen)
     k.resize(kdByteLen);
     return k;
 }
+
+bytes dev::str2byte(const std::string &str )
+{
+    size_t i = 0;   //位
+    bytes bRet;
+
+    bRet.clear();
+    while (i < str.length())
+    {
+        char high = str[i];
+        char low=0;
+
+        if ((high >= 48) && (high <= 57))
+        {
+            high -= 48;
+        }
+        else if ((high >= 65) && (high <= 70))
+        {
+            high -= 55;
+        }
+        else if ((high >= 97) && (high <= 102))
+        {
+            high -= 87;
+        }
+
+        ++i;
+        if(i < str.length())
+        {
+            low = str[i];
+            if ((low >= 48) && (low <= 57))
+            {
+                low -= 48;
+            }
+            else if ((low >= 65) && (low <= 70))
+            {
+                low -= 55;
+            }
+            else if ((low >= 97) && (low <= 102))
+            {
+                low -= 87;
+            }
+        }
+        bRet.push_back((high<<4) + low);
+        ++i;
+    }
+
+    return bRet;
+}
+
+string dev::byte2Str(unsigned char byte_arr[], int arr_len)
+{
+
+    string hexstr="";
+
+    for (int i=0;i<arr_len;i++)
+    {
+
+        char hex1;
+
+        char hex2;
+
+/*借助C++支持的unsigned和int的强制转换，把unsigned char赋值给int的值，那么系统就会自动完成强制转换*/
+
+        int value=byte_arr[i];
+
+        int S=value/16;
+
+        int Y=value % 16;
+
+//将C++中unsigned char和int的强制转换得到的商转成字母
+
+        if (S>=0&&S<=9)
+
+            hex1=(char)(48+S);
+
+        else
+
+            hex1=(char)(55+S);
+
+//将C++中unsigned char和int的强制转换得到的余数转成字母
+
+        if (Y>=0&&Y<=9)
+
+            hex2=(char)(48+Y);
+
+        else
+
+            hex2=(char)(55+Y);
+
+//最后一步的代码实现，将所得到的两个字母连接成字符串达到目的
+
+        hexstr=hexstr+hex1+hex2;
+
+    }
+
+    return hexstr;
+
+}
