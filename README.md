@@ -200,6 +200,7 @@ GENERAL OPTIONS:
 aleth --no-discovery --config /home/root1/datadir/config.json  --listen 30303 --data-dir /home/root1/datadir/blockdata --db-path /home/root1/datadir/blockdata --peerset required:enode://815fbad4bb9e60bff95d36c6419987c85c8e15e46f78d7b67da49dbeb9b2824bf458117eeff03164b57684dcd78557b582b0bb023bffeafbde6256ec3567e6dc@47.57.164.0:30303
 
 ## config.json
+```json
 {
   "sealEngine": "Ethash",
 	"params": {
@@ -238,6 +239,7 @@ aleth --no-discovery --config /home/root1/datadir/config.json  --listen 30303 --
     }
   }
 }
+```
 ## 启动RPC服务
 ./scripts/dopple.py  /home/root1/datadir/blockdata/geth.ipc   http://172.31.213.189:30304 
 
