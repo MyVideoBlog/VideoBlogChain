@@ -197,19 +197,19 @@ GENERAL OPTIONS:
 
 ## Start Node
 
-aleth --no-discovery --config /home/root1/datadir/config.json  --listen 30303 --data-dir /home/root1/datadir/blockdata --db-path /home/root1/datadir/blockdata --peerset required:enode://3eb48e3dbab6bc18786b234bb7ba83c3f0ebfd3294ae077d67be2bc5d1cc21c2de86efc4459892cbf527c22a2110738efea684210e11e8be274a28444635677d@47.57.164.0:30303
+aleth --no-discovery --config /home/root1/datadir/config.json  --listen 30303 --data-dir /home/root1/datadir/blockdata --db-path /home/root1/datadir/blockdata --peerset required:enode://815fbad4bb9e60bff95d36c6419987c85c8e15e46f78d7b67da49dbeb9b2824bf458117eeff03164b57684dcd78557b582b0bb023bffeafbde6256ec3567e6dc@47.57.164.0:30303
 
 ## config.json
 {
   "sealEngine": "Ethash",
 	"params": {
 		"accountStartNonce": "0x00",
-		"homesteadForkBlock": "0x118c30",
+		"homesteadForkBlock": "0x0",
 		"daoHardforkBlock": "0x0",
-		"EIP150ForkBlock": "0x259518",
-		"EIP158ForkBlock": "0x28d138",
-		"byzantiumForkBlock": "0x42ae50",
-		"constantinopleForkBlock": "0x500000",
+		"EIP150ForkBlock": "0x0",
+		"EIP158ForkBlock": "0x0",
+		"byzantiumForkBlock": "0x0",
+		"constantinopleForkBlock": "0x0",
 		"networkID" : "0x20200522",
 		"chainID": "0x20200522",
 		"maximumExtraDataSize": "0x20",
